@@ -29,7 +29,6 @@ def get_weather():
   high = int(today_forecast['maxtempC'])
   low = int(today_forecast['mintempC'])
 
-  # 用国际标准的weatherCode做映射
   weather_map = {
     113: "晴", 116: "多云", 119: "阴", 122: "阴",
     143: "雾", 176: "小雨", 179: "小雪",
@@ -50,11 +49,10 @@ def get_weather():
     386: "雷阵雨", 389: "雷阵雨",
     392: "雷阵雨", 395: "大雪",
   }
-weather_cn = weather_map.get(code, "未知")
-weather_desc = weather_cn + "，" + str(low) + "~" + str(high) + "°C"
-# 临时把情话塞进天气字段测试
-weather_desc = weather_desc + "\n" + get_words()
-return weather_desc, temp
+  weather_cn = weather_map.get(code, "未知")
+  words = get_words()
+  weather_desc = weather_cn + "，" + str(low) + "~" + str(high) + "°C\n" + words
+  return weather_desc, temp
 
 
 

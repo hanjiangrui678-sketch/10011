@@ -50,9 +50,12 @@ def get_weather():
     386: "雷阵雨", 389: "雷阵雨",
     392: "雷阵雨", 395: "大雪",
   }
-  weather_cn = weather_map.get(code, "未知")
-  weather_desc = weather_cn + "，" + str(low) + "~" + str(high) + "°C"
-  return weather_desc, temp
+weather_cn = weather_map.get(code, "未知")
+weather_desc = weather_cn + "，" + str(low) + "~" + str(high) + "°C"
+# 临时把情话塞进天气字段测试
+weather_desc = weather_desc + "\n" + get_words()
+return weather_desc, temp
+
 
 
 
@@ -80,7 +83,6 @@ client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
-data = {"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words()}}
-
+data = {"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)

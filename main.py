@@ -23,14 +23,28 @@ def get_weather():
   url = "https://wttr.in/" + urllib.parse.quote(city) + "?format=j1&lang=zh"
   res = requests.get(url).json()
   current = res['current_condition'][0]
-  weather = current['weatherDesc'][0]['value']
+  weather_en = current['weatherDesc'][0]['value']
   temp = int(current['temp_C'])
-  # 取今天的最高最低温
   today_forecast = res['weather'][0]
   high = int(today_forecast['maxtempC'])
   low = int(today_forecast['mintempC'])
-  weather_desc = weather + "，" + str(low) + "~" + str(high) + "℃"
+
+  # 英文天气翻译成中文
+  weather_map = {
+    "Sunny": "晴", "Clear": "晴",
+    "Partly cloudy": "多云", "Partly Cloudy": "多云",
+    "Cloudy": "阴", "Overcast": "阴",
+    "Mist": "薄雾", "Fog": "雾",
+    "Light rain": "小雨", "Light drizzle": "小雨",
+    "Patchy rain possible": "可能有阵雨",
+    "Moderate rain": "中雨", "Heavy rain": "大雨",
+    "Light snow": "小雪", "Moderate snow": "中雪",
+    "Thunderstorm": "雷阵雨",
+  }
+  weather_cn = weather_map.get(weather_en, weather_en)
+  weather_desc = weather_cn + "，" + str(low) + "~" + str(high) + "°C"
   return weather_desc, temp
+
 
 
 
